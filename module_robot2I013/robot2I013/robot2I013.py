@@ -21,7 +21,7 @@ class Robot2I013(object):
     WHEEL_BASE_CIRCUMFERENCE = WHEEL_BASE_WIDTH * math.pi # perimetre du cercle de rotation (mm)
     WHEEL_CIRCUMFERENCE      = WHEEL_DIAMETER   * math.pi # perimetre de la roue (mm)
     
-    def __init__(self,controler,fps=25,resolution=None,servoPort = "SERVO1",motionPort="AD1"):
+    def __init__(self,resolution=None,servoPort = "SERVO1",motionPort="AD1"):
         """ 
             Initialise le robot
 
@@ -34,8 +34,6 @@ class Robot2I013(object):
         """
 
         self._gpg= EasyGoPiGo3()
-        self.controler = controler
-        self.fps=fps
         self.LED_LEFT_EYE = self._gpg.LED_LEFT_EYE
         self.LED_RIGHT_EYE = self._gpg.LED_RIGHT_EYE
         self.LED_LEFT_BLINKER = self._gpg.LED_LEFT_BLINKER
@@ -88,7 +86,6 @@ class Robot2I013(object):
         :dps: la vitesse cible en nombre de degres par seconde
         """
         self._gpg.set_motor_dps(port,dps)
-        self.set_motor_limits(port,dps)
 
 
     def get_motor_position(self):
@@ -101,7 +98,7 @@ class Robot2I013(object):
     def offset_motor_encoder(self, port, offset):
         """
         Fixe l'offset des moteurs (en degres) (permet par exemple de reinitialiser a 0 l'etat 
-        du moteur gauche avec offset_motor_encode(self.MOTOR_LEFT,self.read_encoders()[0])
+        du moteur gauche avec offset_motor_encode(self.MOTOR_LEFT,self.get_motor_position()[0])
         
         :port: un des deux moteurs MOTOR_LEFT ou MOTOR_RIGHT (ou les deux avec +)
         :offset: l'offset de decalage en degre.
@@ -138,4 +135,3 @@ class Robot2I013(object):
         stream.close()
         return img
     
-
